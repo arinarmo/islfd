@@ -1,6 +1,8 @@
 ---
 title: "islfd"
-output: ioslides_presentation
+output: 
+  ioslides_presentation:
+    widescreen: true
 ---
 
 ## Plan
@@ -19,6 +21,7 @@ output: ioslides_presentation
 - Tipos de objeto
 - Operaciones básicas
 - Estructuras de control
+- Environments
 - Vectorización, funciones anónimas
 - Paquetes útiles
 - Graficación: ggplot2
@@ -366,22 +369,246 @@ for(i in 1:5) {
 }
 ```
 
-## Scope léxico
-R usa un scope léxico, como la mayoría de los lenguajes modernos. La evaluación
-y asignación de nombres depende del lugar donde el código está escrito, no donde
-es evaluado.
 
+## Funciones
+Para definir una función
 ```{r}
-x <- 3
-add.x <- function(y) {
-  y + x
+do.something <- function(x, y) {
+  x + y
 }
-add.x(1)
+do.something(10, 3)
 ```
 
-## Scope léxico
+## Funciones
+Valores por defecto en argumentos
 ```{r}
+do.something <- function(x, y=1) {
+  x + y
+}
+do.something(10)
+do.something(y=3, 10)
+```
 
+## Funciones
+Argumentos adicionales, no definidos
+```{r}
+do.something <- function(x, y=1, ...) {
+  x + y + sum(...)
+}
+do.something(10, z=3, a=5)
+```
+`...` sólo puede ser usado como argumento de una función
+
+## Funciones
+`do.call` llama la función especificada con una lista de argumentos
+```{r}
+args <- list(x=4, y=3, z=1)
+do.call(do.something, args)
+do.call("do.something", args)
+```
+
+## Environments
+Un environment es un espacio de nombres, usado en las reglas de scoping de R. 
+(Scope léxico) También se pueden crear manualmente.
+```{r}
+e <- new.env()
+e$a <- FALSE
+e$b <- "b"
+e$uno <- 1
+ls(e)
+```
+
+## Environments
+Un environment se comporta de manera similar a una lista, pero difiere de varias formas importantes.
+No se puede acceder posicionalmente a nombres de un environment. Los environments
+no están ordenados
+```{r, error=T}
+l[[1]]
+e[[1]]
+```
+
+## Environments
+Una lista puede contener varios elementos con el mismo nombre, aunque esto no es recomendado
+```{r}
+list(a="a", a="b")
+e$a <- "b"
+e$a
+```
+
+## Environments
+Un environment tiene un "padre". Solo el environment vacío no tiene un padre.
+```{r}
+parent.env(e)
+parent.env(globalenv())
+```
+
+## Environments
+Asignar un elemento de una lista a `NULL` lo elimina de la lista. Hacerlo en un
+environment crea una referencia a `NULL`.
+```{r}
+e$a <- NULL
+ls(e)
+```
+
+## Environments
+`search()` regresa la lista de padres del environment global, este es el orden 
+en el que se resuelven los nombres
+```{r}
+search()
+pryr::where("var")
+```
+
+## Environments
+Cuando se carga un paquete nuevo, se agrega a `search()` entre el `globalenv()` y
+el siguiente elemento
+```{r}
+search()
+library(pryr)
+search()
+```
+
+## Environments
+Para checar si un nombre existe en un environment se usa `exists`. Por defecto
+se busca en todos los padres, para evitarlo usamos `inherits = FALSE`
+```{r}
+exists("mean", envir=e)
+exists("mean", inherits=F)
+```
+
+## Environments
+Una función tiene cuatro environments asociados. El enclosing, que es el
+environment donde fue creada la función, se usa para el scoping. Todos los
+objetos a los que haga referencia la función se buscaran primero en este
+environment.
+```{r}
+environment(sd)
+```
+
+## Environments
+Un binding environment es donde existe un nombre que haga referencia a la función,
+una función puede tener más de un binding environment
+```{r}
+sd <- stats::sd
+pryr::where("sd")
+```
+
+## Environments
+Estos dos environments pueden ser distintos, y sólo el primero se usa para las
+reglas de scoping, asegurando que la función siempre busque las referencias adecuadas
+```{r}
+var <- "Can't break this"
+pryr::where("var")
+sd(c(1, 2, 3))
+environment(sd)
+pryr::where("sd")
+```
+
+## Environments
+El environment de ejecución es efímero, se crea al ejecutar una función, y se
+destruye al terminar la misma, a menos de que la función regrese a su vez una 
+función
+```{r}
+plus <- function(x) {
+  function(y) x + y
+}
+plus.1 <- plus(1)
+environment(plus.1)
+identical(parent.env(environment(plus.1)), environment(plus))
+```
+
+## Environment
+El último environment asociado a una función es el de llamada. Este se puede
+acceder a través de `parent.frame`, típicamente no será necesario acceder a él,
+a menos de que se quiera usar evaluación no estándar o simular un scoping dinámico
+```{r}
+f <- function() {
+  x <- 10
+  function() {
+    print(get("x", environment()))
+    print(get("x", parent.frame()))
+  }
+}
+x <- 5
+f()()
+```
+
+## Attach, Detach
+`attach` añade un objeto a `search()`. Este objeto puede ser un environment,
+lista o data frame, permitiendo acceso a su lista de nombres en el environment
+en el que se esta trabajando.
+```{r}
+attach(e)
+search()
+detach(e)
+```
+
+## Attach, Detach
+`library` funciona como `attach`, para quitar un paquete podemos usar `detach`
+```{r}
+library(pryr)
+detach("package:pryr", unload=T)
+search()
+```
+
+## Vectorización
+Muchas funciones base en R incluyen llamadas a `.Internal`, `.Primitive` o `.Call`
+```{r}
+sum
+paste
+```
+
+## Vectorización
+Estas funciones de hecho son llamadas a rutinas de C o Fortran, por razones de
+velocidad. Esto a menudo quiere decir que es más rápido llamar una función 
+predefinida que replicarla
+```{r}
+for.sum <- function(v) {
+  s <- 0
+  for(i in v) s <- s + i
+  s
+}
+```
+
+## Vectorización
+```{r}
+v <- matrix(rbinom(1e6, 100, 0.5), ncol = 1e3)
+system.time(rep(for.sum(v), 1e6))
+system.time(sum(v, 1e6))
+```
+
+Para reducir el overhead de llamar repetidamente las funciones de C, es útil 
+pensar en aritmética de vectores y en utilizar funciones primitivas, en lugar
+de escribir ciclos `for`. Esto es especialmente un problema si R tiene que cambiar
+el tamaño de un objeto en cada paso del ciclo
+
+## Vectorización
+Otra manera de "vectorizar" es utilizar funciones de la familia `apply`. En este
+caso no siempre se están reduciendo las llamadas a funciones internas, pero se está asegurando
+que no haya efectos secundarios y el código se vuelve más leíble
+```{r}
+apply(v, MARGIN=2, FUN=mean)[1:5]
+```
+
+## Vectorización
+```{r}
+m <- nrow(v)
+n <- ncol(v)
+means <- rep(0, n)
+for(j in 1:n) {
+  col.sum <- 0
+  for(i in 1:m) {
+    col.sum <- col.sum + v[i, j]
+  }
+  means[j] <- col.sum/m
+}
+means[1:5]
+```
+
+## Vectorización
+Por último, si la función a aplicar a una secuencia se va a utilizar sólo una vez, 
+y es fácil de leer, se puede utilizar una función anónima.
+```{r}
+apply(v, MARGIN=2, FUN=function(col) quantile(col, 0.3) )[1:5]
 ```
 
 ## Probabilidad y Estadística
@@ -414,27 +641,4 @@ add.x(1)
 - Máquinas de soporte vectorial
 
 
-
-
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
-
-## Slide with Bullets
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-## Slide with R Code and Output
-
-```{r}
-summary(cars)
-```
-
-## Slide with Plot
-
-```{r, echo=FALSE}
-plot(cars)
-```
 
