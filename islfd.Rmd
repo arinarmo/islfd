@@ -1,0 +1,440 @@
+---
+title: "islfd"
+output: ioslides_presentation
+---
+
+## Plan
+
+- R Programming
+- Probabilidad y Estadística (crash course)
+- Aprendizaje Estadístico
+- Ejemplo práctico
+
+## R Programming
+
+- Propósito y Task Views
+- Instalación de paquetes
+- Ayuda
+- Tipos de datos
+- Tipos de objeto
+- Operaciones básicas
+- Estructuras de control
+- Vectorización, funciones anónimas
+- Paquetes útiles
+- Graficación: ggplot2
+
+## Propósito y Task Views
+
+R es un lenguaje creado para hacer cómputo estadístico y graficación. Ha sido
+ampliamente adoptado y extendido por miembros de la comunidad científica, y tiene
+performance comparable a MATLAB o GNU Octave en cuanto a cómputo con matrices.
+
+La más grande ventaja de R es el acceso a cientos de paquetes a través del 
+[CRAN](https://cran.r-project.org/), con mirrors alrededor del mundo. El CRAN 
+define y mantiene Task Views, listas de paquetes con un propósito en común. 
+También mantiene versiones binarias de muchos paquetes para Windows y OS X.
+
+## Algunas Task Views
+
+- Bayesian Inference
+- Clinical Trial Design, Monitoring and Analysis
+- Econometrics
+- Analysis of Ecological and Environmental Data
+- Empirical Finance
+- Statistical Genetics
+- Natural Language Processing
+- Machine Learning & Statistical Learning
+- Analysis of Spatial Data
+- Graphical Models
+
+[Full list](https://cran.r-project.org/web/views/)
+
+## Instalación de paquetes
+Para instalar paquetes del CRAN
+```{r, eval=FALSE}
+install.packages("dplyr")
+install.packages("file:///tmp/dplyr.tgz", repos=NULL)
+```
+
+Si no hay una versión binaria disponible, `install.packages` compilará las fuentes
+indicadas, también se encarga de resolver dependencias de paquetes.
+
+Para instalar todos los paquetes en un task view
+```{r, eval=FALSE}
+install.packages("ctv")
+library("ctv")
+install.views("NaturalLanguageProcessing")
+```
+
+
+## Instalación de paquetes
+El paquete `devtools` nos permite instalar un paquete directamente desde su
+fuente en github, bitbucket, svn, etc.
+
+```{r, eval=FALSE}
+install.packages("devtools")
+library("devtools")
+install_github("hadley/ggplot2")
+```
+
+El IDE RStudio ofrece una manera sencilla de realizar estas instalaciones, además
+de ofrecer integración con `packrat`, un paquete que permite aislar el ambiente
+de R usando una biblioteca privada de paquetes (similar a `virtualenv`).
+
+## Ayuda
+
+R ofrece una manera de acceder a la documentación de una función a través de 
+`?`. Es común que las funciones que un paquete expone estén documentadas, así como
+encontrar documentación de un paquete en general
+
+```{r, eval=F}
+?library
+?devtools
+```
+
+También podemos obtener ayuda acerca de un operador
+
+```{r, eval=F}
+?`+`
+```
+
+## Ayuda
+
+Además, algunos paquetes con funcionalidad compleja ofrecen vignettes,
+con quickstarts o tutoriales acerca de su uso
+
+```{r, eval=F}
+vignette(package = "dplyr")
+vignette("databases", package = "dplyr")
+```
+
+Si todo lo demás falla, existe una comunidad activa en [stack overflow](http://stackoverflow.com/tags/r)
+para todo lo relacionado con R como lenguaje, así como [cross validated](http://stats.stackexchange.com/) para 
+todas las preguntas de índole estadística.
+
+## Tipos de datos
+
+Existen 6 tipos de datos "atómicos" en R
+
+```{r}
+class(TRUE)
+class(42)
+class(42L)
+```
+
+## Tipos de datos
+
+Existen 6 tipos de datos "atómicos" en R
+
+```{r}
+class(4 + 2i)
+class("42")
+class(charToRaw("B"))
+```
+
+## Tipos de datos
+
+Adicionalmente, un factor puede ser usado para expresar variables categóricas.
+Un factor puede ser ordenado.
+
+```{r}
+class(factor(1))
+```
+
+## Tipos de datos
+
+`NULL` representa al objeto nulo. Indica que un valor o función no está definida
+
+```{r}
+is.null(NULL)
+is.null(NA)
+1 == NULL
+```
+
+## Tipos de datos
+
+`NA` representa datos faltantes, es una constante de longitud 1. `NA` puede ser
+cualquier tipo de dato excepto `raw`. `NA` no es `NULL`, y existen comportamientos
+predefinidos para lidiar con datos faltantes.
+
+```{r, error = T}
+NA + 1
+sum(c(1, 2, 3, NA), na.rm = TRUE)
+na.fail(c(1, 2, 3, NA))
+```
+
+## Tipos de objeto
+
+Existen muchos tipos de objeto en R, y dos maneras comunes de definir tipos de
+objeto (clases S3 y S4). Sin embargo, los tipos más comunes son vectores, listas, 
+matrices y data frames.
+
+No existe el tipo de objeto "escalar" en R, el dato atómico es el vector.
+```{r}
+length(1)
+```
+
+## Vectores
+
+Un vector sólo puede contener un tipo de dato. Si un elemento de otro tipo se
+concatena a un vector, el vector resultante es del tipo más general. La manera
+más fácil de construir vectores es a través de `c`
+
+```{r}
+c(TRUE, FALSE)
+c(TRUE, FALSE, 2)
+c(TRUE, FALSE, 2, "")
+```
+
+## Vectores
+
+Se puede acceder de manera posicional a los elementos de un vector
+```{r}
+v <- 10:13
+v[[1]]
+v[c(1:2)]
+```
+
+## Vectores
+
+Los elementos de un vector pueden ser nombrados y también accedidos de ese modo
+```{r}
+names(v) <- c("uno", "dos", "tres")
+v[["uno"]]
+```
+
+## Listas
+
+Una lista puede contener cualquier tipo de objeto y combinar distintos tipos
+de datos.
+```{r}
+l <- list(1, TRUE, "...")
+l
+```
+
+## Listas
+
+Al igual que un vector, se puede acceder de manera posicional o a través de 
+nombre. A diferencia de un vector, se puede acceder usando el operador `$`
+```{r}
+names(l) <- c("uno", "true", "ellipsis")
+l$uno
+```
+
+## Listas
+
+Se pueden borrar elementos de una lista refiriendolos a `NULL`
+```{r}
+l$true <- NULL
+l
+```
+
+## Matrices
+
+Una matriz es como un vector, aunque con dos dimensiones. Las matrices se llenan
+y se despliegan en orden de columnas.
+```{r}
+m <- matrix(c(1,2,3,4), nrow = 2)
+m
+m[1, 2]
+```
+Al igual que un vector, sólo pueden contener un tipo de dato
+
+## Matrices
+
+Las columnas y las filas se pueden nombrar por separado
+```{r}
+colnames(m) <- c("col1", "col2")
+rownames(m) <- c("row1", "row2")
+m
+m["row1", "col1"]
+```
+
+## Matrices
+`dim`, `nrow` y `ncol` nos dan las dimensiones de una matriz
+```{r}
+dim(m)
+nrow(m)
+ncol(m)
+```
+
+## Data Frames
+
+Un data frame es una colección de variables, que se comporta como matriz
+o como lista de columnas, según la función que se le aplique.
+```{r}
+df <- data.frame(col1 = c(1,2), col2 = c("tres","cuatro"))
+df
+```
+Un data frame puede contener distintos tipos de datos
+
+## Data Frames
+```{r}
+dim(df)
+df$col1
+names(df)
+```
+
+## Factores
+Un tipo de objeto adicional es el factor, que sirve para representar variables
+categóricas, ordenadas o no
+```{r}
+f <- factor(c("A veces", "Siempre", "A veces", "Nunca"), 
+            levels = c("Nunca", "A veces", "Siempre"))
+f
+as.ordered(f)
+```
+
+## Factores
+```{r}
+nms <- c("John", "Paul", "George", "Ringo")
+df <- data.frame(nombre=nms, sexo=f, stringsAsFactors = F)
+df
+summary(df)
+```
+
+## Operaciones básicas
+```{r}
+7 + 2
+7 - 2
+7 * 2
+```
+
+## Operaciones básicas
+```{r}
+7 / 2
+7 %% 2
+7 %/% 2
+```
+
+## Operaciones básicas
+```{r}
+7 / 2
+7 ^ 2
+7 ** 2
+```
+
+## Operaciones básicas
+```{r}
+7 %/% 2
+7 %% 2
+```
+
+## Operaciones básicas
+```{r}
+TRUE & FALSE
+TRUE | FALSE
+!TRUE
+```
+
+## Operaciones básicas
+Todas estas operaciones se pueden aplicar a vectores, y se aplicarán componente
+a componente, repitiendo el vector más pequeño como sea necesario
+```{r}
+c(1, 2) + c(3, 0)
+c(2, 1) * c(2, 2)
+c(1, 2, 3, 4) ^ c(2, 3)
+```
+
+## Operaciones básicas
+Todos los operadores en R son funciones. Esto permite extender los operadores
+añadiendo comportamiento para objetos específicos.
+```{r}
+1 + 1
+`+`(1, 1)
+```
+
+## Operaciones básicas
+De hecho, todo lo que pasa en R es una llamada a una función
+```{r}
+v[[1]]
+`[[`(v, 1)
+`<-`(`[`(m, 1, 1), 0)
+m[1, 1]
+```
+
+## Estructuras de control
+`if`, `else`, `for`, `while`, `break`, `next` funcionan como en otros
+lenguajes.
+```{r}
+for(i in 1:5) {
+  if(i < 3) {
+    print(i)
+  } else {
+    print(6 - i)
+  }
+}
+```
+
+## Scope léxico
+R usa un scope léxico, como la mayoría de los lenguajes modernos. La evaluación
+y asignación de nombres depende del lugar donde el código está escrito, no donde
+es evaluado.
+
+```{r}
+x <- 3
+add.x <- function(y) {
+  y + x
+}
+add.x(1)
+```
+
+## Scope léxico
+```{r}
+
+```
+
+## Probabilidad y Estadística
+
+- Distribución de probabilidad
+- La distribución normal
+- Ley de los grandes números. Implicaciones
+- Teorema central de límite. Implicaciones
+- Conclusiones de Teoría de la Decisión
+- Estimación de parámetros
+- Modelo líneal
+- Valores p, R^2
+- Interpretaciones de la teoría
+- Ejemplos de distribuciones
+- Data Science vs Estadística
+
+## Aprendizaje Estadístico
+
+- El problema de aprendizaje supervisado
+- Error = Sesgo + Varianza. Tradeoff
+- Overfitting y la maldición de la dimensionalidad
+- KISS: Model Edition
+- Medición del error (sesgo + varianza)
+- Cross Validation. Bootstrap. Out of bag
+- Regresión. Métricas de error
+- Clasificación. Métricas de error
+- Modelos lineales generalizados
+- Lasso, ridge, glmnet
+- Árboles de decisión. Random Forests
+- Máquinas de soporte vectorial
+
+
+
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Code and Output
+
+```{r}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
