@@ -1,8 +1,10 @@
 ---
 title: "islfd"
-output: 
+output:
   ioslides_presentation:
-    widescreen: true
+    widescreen: yes
+  beamer_presentation: default
+  slidy_presentation: default
 ---
 
 ## Plan
@@ -735,6 +737,50 @@ de nombres para indicar las columnas, simplemente hay que agregar un _ (`select_
 
 Para una introducción más extensa ver `vignette("introduction", package="dplyr")`
 
+## Ggplot2
+`ggplot2` es un sistema de graficación, basado en gramática de gráficas. Los 
+componentes de una gráfica se pueden "sumar" unos a otros, causando overlay de capas 
+o modificaciones, según corresponda
+
+## Ggplot2 | Scatter
+```{r, fig.height=4}
+library(ggplot2)
+ggplot(mtc, aes(x=mpg, y=disp)) + geom_point()
+```
+
+## Ggplot2 | Color aesthetic
+```{r, fig.height=4}
+ggplot(mtc, aes(x=mpg, y=disp, color=as.factor(cyl))) + geom_point()
+```
+
+## Ggplot2 | Smooth curve (loess)
+```{r, fig.height=4}
+ggplot(mtc, aes(x=mpg, y=disp)) + geom_point() + geom_smooth()
+```
+
+## Ggplot2 | Histogram + Density
+```{r, fig.height=4, message=F}
+ggplot(mtc, aes(x=mpg, y=..density..)) + geom_histogram() + geom_density()
+```
+
+## Ggplot2 | Bar (counts)
+```{r, fig.height=4}
+ggplot(mtc, aes(x=as.factor(cyl))) + geom_bar()
+```
+
+## Ggplot2 | Boxplot 
+```{r, fig.height=4}
+ggplot(mtc, aes(x=as.factor(cyl), y=mpg)) + geom_boxplot()
+```
+
+## Ggplot2 | Facet wrap
+```{r, fig.height=4}
+ggplot(mtc, aes(x=disp, y=mpg)) + geom_point() + facet_wrap(~cyl, scales="free")
+```
+
+## Ggplot2 | Contour
+`ggplot2` también permite controlar leyendas, etiquetas, ejes, etc. Para más 
+detalles ver la [documentación](http://docs.ggplot2.org/current/)
 
 ## Probabilidad y Estadística
 
@@ -749,6 +795,61 @@ Para una introducción más extensa ver `vignette("introduction", package="dplyr
 - Interpretaciones de la teoría
 - Ejemplos de distribuciones
 - Data Science vs Estadística
+
+## Distribución de Probabilidad
+Dado un experimento aleatorio con posibles resultados conocidos, 
+una *ley* o *distribución* de probabilidad describe la verosimilitud de cada
+resultado, asignándole una medida. Los posibles resultados del
+experimento son codificados en una *variable aleatoria*. El conjunto de 
+posibles valores de dicha variable se conoce como el *soporte* de la distribución.
+
+Si la variable aleatoria es *discreta*, es decir, si toma valores en un conjunto 
+finito o infinito numerable, la distribución se caracteriza por una función *masa de probabilidad*. 
+Si la variable aleatoria es *continua*, se catacteriza por una
+función de *densidad de probabilidad*.
+
+## Distribución de Probabilidad | Distribución Discreta
+El resultado de evaluar la función masa en un punto del soporte es
+igual a la probabilidad de que la variable tome ese valor (f(x) = Pr(X=x)), además,
+la suma de todas esas evaluaciones debe ser igual a 1.
+
+Ejemplo: Lanzamiento de un dado.
+
+## Distribución de Probabilidad | Distribución Continua
+El resultado de evaluar la función densidad en un punto del soporte
+NO  es igual a la probabilidad de que la variable tome ese valor, de hecho, la
+probabilidad de que la variable tome un valor individual típicamente es cero. 
+
+La probabilidad de que la variable se encuentre en un rango de valores es la integral
+de la función de densidad en ese rango. Además, la integral sobre todo el soporte
+debe ser igual a 1.
+
+Ejemplo: Altura de una persona.
+
+## La distribución normal
+La distribución normal es muy importante en la teoría estadística, y es 
+muy prevalente en las aplicaciones. Una gran cantidad de fenómenos naturales,
+al ser medidos, exhiben valores con un comportamiento normal.
+```{r, echo=FALSE, fig.height=4}
+ggplot(data.frame(x=-300:300/100, y=dnorm(-300:300/100)), aes(x=x, y=y)) + geom_line()
+```
+
+## La distribución normal
+La distribución normal se caracteriza por su media (mu) y su varianza (sigma^2).
+La media es el parámetro de ubicación, nos dice en dónde se concentra la densidad.
+La varianza es un parámetro de precisión, nos dice que tan concentrada está la densidad
+```{r, echo=FALSE, fig.height=4}
+ggplot(data.frame(x=-400:400/100, y=dnorm(-400:400/100)), aes(x=x, y=y)) + geom_line() +
+  geom_line(data=data.frame(x=-400:400/100, y=dnorm(-400:400/100, m=2, s=0.3)), color="blue")
+```
+
+## La distribución normal | Propiedades
+- Es simétrica alrededor de la media (mu)
+- La media es igual a la mediana y a la moda
+- Cerca del 68% de la distribución se acumula en una desviación estándar alrededor de la media
+- Cerca del 95% de la distribución se acumula en dos desviaciónes estándar alrededor de la media
+
+## Ley de los grandes números
 
 ## Aprendizaje Estadístico
 
