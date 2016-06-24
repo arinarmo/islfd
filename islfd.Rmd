@@ -37,14 +37,9 @@ knitr::knit_hooks$set(mysize = function(before, options, envir) {
 
 ## Propósito y Task Views
 
-R es un lenguaje creado para hacer cómputo estadístico y graficación. Ha sido
-ampliamente adoptado y extendido por miembros de la comunidad científica, y tiene
-performance comparable a MATLAB o GNU Octave en cuanto a cómputo con matrices.
+R es un lenguaje creado para hacer cómputo estadístico y graficación. Ha sido ampliamente adoptado y extendido por miembros de la comunidad científica, y tiene performance comparable a MATLAB o GNU Octave en cuanto a cómputo con matrices.
 
-La más grande ventaja de R es el acceso a cientos de paquetes a través del 
-[\underline{CRAN}](https://cran.r-project.org/), con mirrors alrededor del mundo. El CRAN 
-define y mantiene Task Views, listas de paquetes con un propósito en común. 
-También mantiene versiones binarias de muchos paquetes para Windows y OS X.
+La más grande ventaja de R es el acceso a cientos de paquetes a través del [\underline{CRAN}](https://cran.r-project.org/), con mirrors alrededor del mundo. El CRAN define y mantiene Task Views, listas de paquetes con un propósito en común. También mantiene versiones binarias de muchos paquetes para Windows y OS X.
 
 ## Algunas Task Views
 
@@ -69,8 +64,7 @@ install.packages("dplyr")
 install.packages("file:///tmp/dplyr.tgz", repos=NULL)
 ```
 
-Si no hay una versión binaria disponible, `install.packages` compilará las fuentes
-indicadas, también se encarga de resolver dependencias de paquetes.
+Si no hay una versión binaria disponible, `install.packages` compilará las fuentes indicadas, también se encarga de resolver dependencias de paquetes.
 
 Para instalar todos los paquetes en un task view
 ```{r, eval=FALSE, mysize=TRUE, size='\\small'}
@@ -81,8 +75,7 @@ install.views("NaturalLanguageProcessing")
 
 
 ## Instalación de paquetes
-El paquete `devtools` nos permite instalar un paquete directamente desde su
-fuente en github, bitbucket, svn, etc.
+El paquete `devtools` nos permite instalar un paquete directamente desde su fuente en github, bitbucket, svn, etc.
 
 ```{r, eval=FALSE, mysize=TRUE, size='\\small'}
 install.packages("devtools")
@@ -90,15 +83,11 @@ library("devtools")
 install_github("hadley/ggplot2")
 ```
 
-El IDE RStudio ofrece una manera sencilla de realizar estas instalaciones, además
-de ofrecer integración con `packrat`, un paquete que permite aislar el ambiente
-de R usando una biblioteca privada de paquetes (similar a `virtualenv`).
+El IDE RStudio ofrece una manera sencilla de realizar estas instalaciones, además de ofrecer integración con `packrat`, un paquete que permite aislar el ambiente de R usando una biblioteca privada de paquetes (similar a `virtualenv`).
 
 ## Ayuda
 
-R ofrece una manera de acceder a la documentación de una función a través de 
-`?`. Es común que las funciones que un paquete expone estén documentadas, así como
-encontrar documentación de un paquete en general
+R ofrece una manera de acceder a la documentación de una función a través de `?`. Es común que las funciones que un paquete expone estén documentadas, así como encontrar documentación de un paquete en general
 
 ```{r, eval=F, mysize=TRUE, size='\\small'}
 ?library
@@ -113,17 +102,14 @@ También podemos obtener ayuda acerca de un operador
 
 ## Ayuda
 
-Además, algunos paquetes con funcionalidad compleja ofrecen vignettes,
-con quickstarts o tutoriales acerca de su uso
+Además, algunos paquetes con funcionalidad compleja ofrecen vignettes, scon quickstarts o tutoriales acerca de su uso
 
 ```{r, eval=F, mysize=TRUE, size='\\small'}
 vignette(package = "dplyr")
 vignette("databases", package = "dplyr")
 ```
 
-Si todo lo demás falla, existe una comunidad activa en [\underline{stack overflow}](http://stackoverflow.com/tags/r)
-para todo lo relacionado con R como lenguaje, así como [\underline{cross validated}](http://stats.stackexchange.com/) para 
-todas las preguntas de índole estadística.
+Si todo lo demás falla, existe una comunidad activa en [\underline{stack overflow}](http://stackoverflow.com/tags/r) para todo lo relacionado con R como lenguaje, así como [\underline{cross validated}](http://stats.stackexchange.com/) para todas las preguntas de índole estadística.
 
 ## Tipos de datos
 
@@ -166,9 +152,7 @@ is.null(NA)
 
 ## Tipos de datos
 
-`NA` representa datos faltantes, es una constante de longitud 1. `NA` puede ser
-cualquier tipo de dato excepto `raw`. `NA` no es `NULL`, y existen comportamientos
-predefinidos para lidiar con datos faltantes.
+`NA` representa datos faltantes, es una constante de longitud 1. `NA` puede ser cualquier tipo de dato excepto `raw`. `NA` no es `NULL`, y existen comportamientos predefinidos para lidiar con datos faltantes.
 
 ```{r, error = T, mysize=TRUE, size='\\small'}
 NA + 1
@@ -178,9 +162,7 @@ na.fail(c(1, 2, 3, NA))
 
 ## Tipos de objeto
 
-Existen muchos tipos de objeto en R, y dos maneras comunes de definir tipos de
-objeto (clases S3 y S4). Sin embargo, los tipos más comunes son vectores, listas, 
-matrices y data frames.
+Existen muchos tipos de objeto en R, y dos maneras comunes de definir tipos de objeto (clases S3 y S4). Sin embargo, los tipos más comunes son vectores, listas,matrices y data frames.
 
 No existe el tipo de objeto "escalar" en R, el dato atómico es el vector.
 ```{r, mysize=TRUE, size='\\small'}
@@ -189,9 +171,7 @@ length(1)
 
 ## Vectores
 
-Un vector sólo puede contener un tipo de dato. Si un elemento de otro tipo se
-concatena a un vector, el vector resultante es del tipo más general. La manera
-más fácil de construir vectores es a través de `c`
+Un vector sólo puede contener un tipo de dato. Si un elemento de otro tipo se concatena a un vector, el vector resultante es del tipo más general. La manera más fácil de construir vectores es a través de `c`
 
 ```{r, mysize=TRUE, size='\\small'}
 c(TRUE, FALSE)
@@ -218,8 +198,7 @@ v[["uno"]]
 
 ## Listas
 
-Una lista puede contener cualquier tipo de objeto y combinar distintos tipos
-de datos.
+Una lista puede contener cualquier tipo de objeto y combinar distintos tipos de datos.
 ```{r, mysize=TRUE, size='\\small'}
 l <- list(1, TRUE, "...")
 l
@@ -227,8 +206,7 @@ l
 
 ## Listas
 
-Al igual que un vector, se puede acceder de manera posicional o a través de 
-nombre. A diferencia de un vector, se puede acceder usando el operador `$`
+Al igual que un vector, se puede acceder de manera posicional o a través de nombre. A diferencia de un vector, se puede acceder usando el operador `$`
 ```{r, mysize=TRUE, size='\\small'}
 names(l) <- c("uno", "true", "ellipsis")
 l$uno
@@ -244,8 +222,7 @@ l
 
 ## Matrices
 
-Una matriz es como un vector, aunque con dos dimensiones. Las matrices se llenan
-y se despliegan en orden de columnas.
+Una matriz es como un vector, aunque con dos dimensiones. Las matrices se llenan y se despliegan en orden de columnas.
 ```{r, mysize=TRUE, size='\\small'}
 m <- matrix(c(1,2,3,4), nrow = 2)
 m
@@ -273,12 +250,12 @@ ncol(m)
 
 ## Data Frames
 
-Un data frame es una colección de variables, que se comporta como matriz
-o como lista de columnas, según la función que se le aplique.
+Un data frame es una colección de variables, que se comporta como matriz o como lista de columnas, según la función que se le aplique.
 ```{r, mysize=TRUE, size='\\small'}
 df <- data.frame(col1 = c(1,2), col2 = c("tres","cuatro"))
 df
 ```
+
 Un data frame puede contener distintos tipos de datos
 
 ## Data Frames
@@ -289,8 +266,7 @@ names(df)
 ```
 
 ## Factores
-Un tipo de objeto adicional es el factor, que sirve para representar variables
-categóricas, ordenadas o no
+Un tipo de objeto adicional es el factor, que sirve para representar variables categóricas, ordenadas o no
 ```{r, mysize=TRUE, size='\\small'}
 f <- factor(c("A veces", "Siempre", "A veces", "Nunca"), 
             levels = c("Nunca", "A veces", "Siempre"))
@@ -341,8 +317,7 @@ TRUE | FALSE
 ```
 
 ## Operaciones básicas
-Todas estas operaciones se pueden aplicar a vectores, y se aplicarán componente
-a componente, repitiendo el vector más pequeño como sea necesario
+Todas estas operaciones se pueden aplicar a vectores, y se aplicarán componente a componente, repitiendo el vector más pequeño como sea necesario
 ```{r, mysize=TRUE, size='\\small'}
 c(1, 2) + c(3, 0)
 c(2, 1) * c(2, 2)
@@ -350,8 +325,7 @@ c(1, 2, 3, 4) ^ c(2, 3)
 ```
 
 ## Estructuras de control
-`if`, `else`, `for`, `while`, `break`, `next` funcionan como en otros
-lenguajes.
+`if`, `else`, `for`, `while`, `break`, `next` funcionan como en otros lenguajes.
 ```{r, mysize=TRUE, size='\\small'}
 for(i in 1:5) {
   if(i < 3) {
@@ -401,8 +375,7 @@ do.call("do.something", args)
 ```
 
 ## Environments
-Un environment es un espacio de nombres, usado en las reglas de scoping de R. 
-(Scope léxico) También se pueden crear manualmente.
+Un environment es un espacio de nombres, usado en las reglas de scoping de R. (Scope léxico) También se pueden crear manualmente.
 ```{r, mysize=TRUE, size='\\small'}
 e <- new.env()
 e$a <- FALSE
@@ -412,9 +385,7 @@ ls(e)
 ```
 
 ## Environments
-Un environment se comporta de manera similar a una lista, pero difiere de varias formas importantes.
-No se puede acceder posicionalmente a nombres de un environment. Los environments
-no están ordenados
+Un environment se comporta de manera similar a una lista, pero difiere de varias formas importantes. No se puede acceder posicionalmente a nombres de un environment. Los environments no están ordenados
 ```{r, error=T}
 l[[1]]
 e[[1]]
@@ -436,24 +407,21 @@ parent.env(globalenv())
 ```
 
 ## Environments
-Asignar un elemento de una lista a `NULL` lo elimina de la lista. Hacerlo en un
-environment crea una referencia a `NULL`.
+Asignar un elemento de una lista a `NULL` lo elimina de la lista. Hacerlo en un environment crea una referencia a `NULL`.
 ```{r, mysize=TRUE, size='\\small'}
 e$a <- NULL
 ls(e)
 ```
 
 ## Environments
-`search()` regresa la lista de padres del environment global, este es el orden 
-en el que se resuelven los nombres
+`search()` regresa la lista de padres del environment global, este es el orden en el que se resuelven los nombres
 ```{r, mysize=TRUE, size='\\small'}
 search()
 pryr::where("var")
 ```
 
 ## Environments
-Cuando se carga un paquete nuevo, se agrega a `search()` entre el `globalenv()` y
-el siguiente elemento
+Cuando se carga un paquete nuevo, se agrega a `search()` entre el `globalenv()` y el siguiente elemento
 ```{r, mysize=TRUE, size='\\small'}
 search()
 library(pryr)
@@ -461,33 +429,27 @@ search()
 ```
 
 ## Environments
-Para checar si un nombre existe en un environment se usa `exists`. Por defecto
-se busca en todos los padres, para evitarlo usamos `inherits = FALSE`
+Para checar si un nombre existe en un environment se usa `exists`. Por defecto se busca en todos los padres, para evitarlo usamos `inherits = FALSE`
 ```{r, mysize=TRUE, size='\\small'}
 exists("mean", envir=e)
 exists("mean", inherits=F)
 ```
 
 ## Environments
-Una función tiene cuatro environments asociados. El enclosing, que es el
-environment donde fue creada la función, se usa para el scoping. Todos los
-objetos a los que haga referencia la función se buscaran primero en este
-environment.
+Una función tiene cuatro environments asociados. El enclosing, que es el environment donde fue creada la función, se usa para el scoping. Todos los objetos a los que haga referencia la función se buscaran primero en este environment.
 ```{r, mysize=TRUE, size='\\small'}
 environment(sd)
 ```
 
 ## Environments
-Un binding environment es donde existe un nombre que haga referencia a la función,
-una función puede tener más de un binding environment
+Un binding environment es donde existe un nombre que haga referencia a la función, una función puede tener más de un binding environment
 ```{r, mysize=TRUE, size='\\small'}
 sd <- stats::sd
 pryr::where("sd")
 ```
 
 ## Environments
-Estos dos environments pueden ser distintos, y sólo el primero se usa para las
-reglas de scoping, asegurando que la función siempre busque las referencias adecuadas
+Estos dos environments pueden ser distintos, y sólo el primero se usa para las reglas de scoping, asegurando que la función siempre busque las referencias adecuadas
 ```{r, mysize=TRUE, size='\\small'}
 var <- "Can't break this"
 pryr::where("var")
@@ -497,9 +459,7 @@ pryr::where("sd")
 ```
 
 ## Environments
-El environment de ejecución es efímero, se crea al ejecutar una función, y se
-destruye al terminar la misma, a menos de que la función regrese a su vez una 
-función
+El environment de ejecución es efímero, se crea al ejecutar una función, y se destruye al terminar la misma, a menos de que la función regrese a su vez una función
 ```{r, mysize=TRUE, size='\\small'}
 plus <- function(x) {
   function(y) x + y
@@ -510,9 +470,7 @@ identical(parent.env(environment(plus.1)), environment(plus))
 ```
 
 ## Environment
-El último environment asociado a una función es el de llamada. Este se puede
-acceder a través de `parent.frame`, típicamente no será necesario acceder a él,
-a menos de que se quiera usar evaluación no estándar o simular un scoping dinámico
+El último environment asociado a una función es el de llamada. Este se puede acceder a través de `parent.frame`, típicamente no será necesario acceder a él, a menos de que se quiera usar evaluación no estándar o simular un scoping dinámico
 ```{r, mysize=TRUE, size='\\small'}
 f <- function() {
   x <- 10
@@ -526,9 +484,7 @@ f()()
 ```
 
 ## Attach, Detach
-`attach` añade un objeto a `search()`. Este objeto puede ser un environment,
-lista o data frame, permitiendo acceso a su lista de nombres en el environment
-en el que se esta trabajando.
+`attach` añade un objeto a `search()`. Este objeto puede ser un environment, lista o data frame, permitiendo acceso a su lista de nombres en el environment en el que se esta trabajando.
 ```{r, mysize=TRUE, size='\\small'}
 attach(e)
 search()
@@ -551,9 +507,7 @@ paste
 ```
 
 ## Vectorización
-Estas funciones de hecho son llamadas a rutinas de C o Fortran, por razones de
-velocidad. Esto a menudo quiere decir que es más rápido llamar una función 
-predefinida que replicarla
+Estas funciones de hecho son llamadas a rutinas de C o Fortran, por razones de velocidad. Esto a menudo quiere decir que es más rápido llamar una función predefinida que replicarla
 ```{r, mysize=TRUE, size='\\small'}
 for.sum <- function(m) {
   s <- 0
@@ -569,15 +523,10 @@ system.time(rep(for.sum(v), 1e6))
 system.time(sum(v, 1e6))
 ```
 
-Para reducir el overhead de llamar repetidamente las funciones de C, es útil 
-pensar en aritmética de vectores y en utilizar funciones primitivas, en lugar
-de escribir ciclos `for`. Esto es especialmente un problema si R tiene que cambiar
-el tamaño de un objeto en cada paso del ciclo
+Para reducir el overhead de llamar repetidamente las funciones de C, es útil pensar en aritmética de vectores y en utilizar funciones primitivas, en lugar de escribir ciclos `for`. Esto es especialmente un problema si R tiene que cambiar el tamaño de un objeto en cada paso del ciclo
 
 ## Vectorización
-Otra manera de "vectorizar" es utilizar funciones de la familia `apply`. En este
-caso no siempre se están reduciendo las llamadas a funciones internas, pero se está asegurando
-que no haya efectos secundarios y el código se vuelve más leíble
+Otra manera de "vectorizar" es utilizar funciones de la familia `apply`. En este caso no siempre se están reduciendo las llamadas a funciones internas, pero se está asegurando que no haya efectos secundarios y el código se vuelve más leíble
 ```{r, mysize=TRUE, size='\\small'}
 apply(v, MARGIN=2, FUN=mean)[1:5]
 ```
@@ -598,16 +547,13 @@ means[1:5]
 ```
 
 ## Vectorización
-Por último, si la función a aplicar a una secuencia se va a utilizar sólo una vez, 
-y es fácil de leer, se puede utilizar una función anónima.
+Por último, si la función a aplicar a una secuencia se va a utilizar sólo una vez, y es fácil de leer, se puede utilizar una función anónima.
 ```{r, mysize=TRUE, size='\\small'}
 apply(v, MARGIN=2, FUN=function(col) quantile(col, 0.3) )[1:5]
 ```
 
 ## Paquetes útiles
-Hay paquetes que mejoran algunos aspectos de R en general, y ayudan a evitar
-algunas deficiencias de la sintáxis. Todos los paquetes que incluyo en esta
-sección están en el CRAN.
+Hay paquetes que mejoran algunos aspectos de R en general, y ayudan a evitar algunas deficiencias de la sintáxis. Todos los paquetes que incluyo en esta sección están en el CRAN.
 
 ## Magrittr
 Magrittr añade un operador con funcionalidad de pipe
@@ -625,14 +571,10 @@ data.frame(a=rnorm(5, 5, 1), b=runif(5)) %>%
 ```
 
 ## Magrittr
-Añade también otros operadores con funcionalidad similar pero resultado
-distinto, por ejemplo, `%<>%` funciona como `%>%` pero actualiza el nombre en 
-el lado izquierdo con el resultado de la expresión, ver `?magrittr` para más
-detalles.
+Añade también otros operadores con funcionalidad similar pero resultado distinto, por ejemplo, `%<>%` funciona como `%>%` pero actualiza el nombre en el lado izquierdo con el resultado de la expresión, ver `?magrittr` para más detalles.
 
 ## Lubridate, Zoo
-`lubridate` y `zoo` añaden mejor soporte para fechas. Aunque R incluye
-soporte para fechas, estos paquetes lo mejoran.
+`lubridate` y `zoo` añaden mejor soporte para fechas. Aunque R incluye soporte para fechas, estos paquetes lo mejoran.
 ```{r, message=FALSE, mysize=TRUE, size='\\small'}
 library(zoo)
 library(lubridate)
@@ -642,16 +584,14 @@ as.yearmon(Sys.Date())
 ```
 
 ## Lubridate, Zoo
-`yearmon` además puede ser operado como numérico, con el entero representando
-un año completo
+`yearmon` además puede ser operado como numérico, con el entero representando un año completo
 ```{r, mysize=TRUE, size='\\small'}
 as.yearmon(Sys.Date()) + 1/12
 as.Date("2016-01-31") %m+% months(0:4) %>% as.yearmon() + 1
 ```
 
 ## Pryr
-`pryr` incluye algunas funciones para lidiar con los componentes internos de R
-(como `where`). De sus funciones más útiles es partial
+`pryr` incluye algunas funciones para lidiar con los componentes internos de R (como `where`). De sus funciones más útiles es partial
 ```{r, message=FALSE, mysize=TRUE, size='\\small'}
 library(pryr)
 my.mean <- partial(mean, na.rm=T)
@@ -659,8 +599,7 @@ my.mean(c(1, 2, 3, NA, 4))
 ```
 
 ## Jsonlite
-`jsonlite` añade la capacidad de leer y serializar JSON a partir de objetos de 
-R. 
+`jsonlite` añade la capacidad de leer y serializar JSON a partir de objetos de R. 
 ```{r, mysize=TRUE, size='\\small'}
 library(jsonlite)
 j <- '[{"a": 1, "b": 2, "c": "A"}, {"a": 4, "b": 1, "c": "B"}]'
@@ -670,13 +609,9 @@ toJSON(d)
 ```
 
 ## Dplyr
-`dplyr` añade muchas funciones para manipulación de datos a través de data frames,
-con un gran performance y backends para varias bases de datos. Nos permite
-manipular directamente tablas de una BD, sin escribir SQL, toda la evaluación
-es lazy y, de ser posible, se realiza directamente en la BD.
+`dplyr` añade muchas funciones para manipulación de datos a través de data frames, con un gran performance y backends para varias bases de datos. Nos permite manipular directamente tablas de una BD, sin escribir SQL, toda la evaluación es lazy y, de ser posible, se realiza directamente en la BD.
 
-Para estos ejemplos utilizaremos un data frame local. Para saber más de como 
-usar `dplyr` con bases de datos, revisar `vignette("databases", package="dplyr")`
+Para estos ejemplos utilizaremos un data frame local. Para saber más de como  usar `dplyr` con bases de datos, revisar `vignette("databases", package="dplyr")`
 
 ## Dplyr
 ```{r, message = F}
@@ -735,20 +670,14 @@ inner_join(mpgs, cyls) %>% head()
 ```
 
 ## Dplyr 
-Las operaciones que se realizan después de `group_by` se aplican a cada grupo
-por separado. e.g. `arrange` organiza las filas adentro de cada grupo por las 
-columnas indicadas. 
+Las operaciones que se realizan después de `group_by` se aplican a cada grupo por separado. e.g. `arrange` organiza las filas adentro de cada grupo por las columnas indicadas. 
 
-Existen versiones de todos estos verbos que toman cadenas de caracteres en lugar 
-de nombres para indicar las columnas, simplemente hay que agregar un _ (`select_` ,
-`mutate_`, etc).
+Existen versiones de todos estos verbos que toman cadenas de caracteres en lugar de nombres para indicar las columnas, simplemente hay que agregar un _ (`select_` , `mutate_`, etc).
 
 Para una introducción más extensa ver `vignette("introduction", package="dplyr")`
 
 ## Ggplot2
-`ggplot2` es un sistema de graficación, basado en gramática de gráficas. Los 
-componentes de una gráfica se pueden "sumar" unos a otros, causando overlay de capas 
-o modificaciones, según corresponda
+`ggplot2` es un sistema de graficación, basado en gramática de gráficas. Los componentes de una gráfica se pueden "sumar" unos a otros, causando overlay de capas o modificaciones, según corresponda
 
 ## Ggplot2 | Scatter
 ```{r, fig.height=4, mysize=TRUE, size='\\small'}
@@ -787,8 +716,7 @@ ggplot(mtc, aes(x=disp, y=mpg)) + geom_point() + facet_wrap(~cyl, scales="free")
 ```
 
 ## Ggplot2
-`ggplot2` también permite controlar leyendas, etiquetas, ejes, etc. Para más 
-detalles ver la [\underline{documentación}](http://docs.ggplot2.org/current/)
+`ggplot2` también permite controlar leyendas, etiquetas, ejes, etc. Para más detalles ver la [\underline{documentación}](http://docs.ggplot2.org/current/)
 
 ## Probabilidad y Estadística
 
@@ -805,21 +733,12 @@ detalles ver la [\underline{documentación}](http://docs.ggplot2.org/current/)
 - Data Science vs Estadística
 
 ## Distribución de Probabilidad
-Dado un experimento aleatorio con posibles resultados conocidos, 
-una *ley* o *distribución* de probabilidad describe la verosimilitud de cada
-resultado, asignándole una medida. Los posibles resultados del
-experimento son codificados en una *variable aleatoria*. El conjunto de 
-posibles valores de dicha variable se conoce como el *soporte* de la distribución.
+Dado un experimento aleatorio con posibles resultados conocidos, una *ley* o *distribución* de probabilidad describe la verosimilitud de cada resultado, asignándole una medida. Los posibles resultados del experimento son codificados en una *variable aleatoria*. El conjunto de posibles valores de dicha variable se conoce como el *soporte* de la distribución.
 
-Si la variable aleatoria es *discreta*, es decir, si toma valores en un conjunto 
-finito o infinito numerable, la distribución se caracteriza por una función *masa de probabilidad*. 
-Si la variable aleatoria es *continua*, se catacteriza por una
-función de *densidad de probabilidad*.
+Si la variable aleatoria es *discreta*, es decir, si toma valores en un conjunto finito o infinito numerable, la distribución se caracteriza por una función *masa de probabilidad*.Si la variable aleatoria es *continua*, se catacteriza por una función de *densidad de probabilidad*.
 
 ## Distribución de Probabilidad | Distribución Discreta
-El resultado de evaluar la función masa en un punto del soporte es
-igual a la probabilidad de que la variable tome ese valor ($f(x) = Pr(X=x)$), además,
-la suma de todas esas evaluaciones debe ser igual a 1.
+El resultado de evaluar la función masa en un punto del soporte es igual a la probabilidad de que la variable tome ese valor ($f(x) = Pr(X=x)$), además, la suma de todas esas evaluaciones debe ser igual a 1.
 
 \begin{equation*}
   \sum\limits_{x \in S} f(x) = 1
@@ -828,9 +747,7 @@ la suma de todas esas evaluaciones debe ser igual a 1.
 Ejemplo: Lanzamiento de un dado.
 
 ## Distribución de Probabilidad | Distribución Continua
-El resultado de evaluar la función densidad en un punto del soporte
-NO  es igual a la probabilidad de que la variable tome ese valor, de hecho, la
-probabilidad de que la variable tome un valor individual típicamente es cero. 
+El resultado de evaluar la función densidad en un punto del soporte NO  es igual a la probabilidad de que la variable tome ese valor, de hecho, la probabilidad de que la variable tome un valor individual típicamente es cero. 
 
 La probabilidad de que la variable se encuentre en un rango de valores se evalua con una integral. 
 
@@ -847,8 +764,7 @@ Además, la integral sobre todo el soporte debe ser igual a 1.
 Ejemplo: Altura de una persona.
 
 ## La distribución normal
-La distribución normal es muy importante en la teoría estadística, y es 
-muy prevalente en las aplicaciones. 
+La distribución normal es muy importante en la teoría estadística, y es muy prevalente en las aplicaciones. 
 Una gran cantidad de fenómenos naturales, al ser medidos, exhiben valores con un comportamiento normal.
 ```{r, echo=FALSE, fig.height=4}
 ggplot(data.frame(x=-300:300/100, f=dnorm(-300:300/100)), aes(x=x, y=f)) + geom_line()
@@ -870,8 +786,7 @@ ggplot(data.frame(x=-400:400/100, f=dnorm(-400:400/100)), aes(x=x, y=f)) + geom_
 - Cerca del 95% de la distribución se acumula en dos desviaciónes estándar alrededor de la media
 
 ## Probabilidad Condicional
-La probabilidad de que suceda un evento, dado algún otro, se conoce como probabilidad
-condicional. Se define como
+La probabilidad de que suceda un evento, dado algún otro, se conoce como probabilidad condicional. Se define como
 
 \begin{equation*}
   Pr(A|B) = Pr(A \cap B)/Pr(B)
@@ -886,33 +801,25 @@ Aplicando esta definición podemos obtener el teorema de Bayes.
 Si $Pr(A | B) = Pr(A)$ se dice que $A$ y $B$ son independientes.
 
 ## Probabilidad Conjunta
-Cuando se tienen dos variables aleatorias $X$ y $Y$, se puede pensar en una 
-distribución de probabilidad conjunta, es decir, una ley que describa y asigne
-probabilidades a los posibles valores de ambas variables. En el caso discreto
+Cuando se tienen dos variables aleatorias $X$ y $Y$, se puede pensar en una distribución de probabilidad conjunta, es decir, una ley que describa y asigne probabilidades a los posibles valores de ambas variables. En el caso discreto
 
 \begin{equation*}
   Pr(X=x, Y=y) = Pr(X=x | Y=y)Pr(Y=y)
 \end{equation*}
 
 ## Densidad Conjunta
-De las definiciones anteriores, se puede obtener que en el caso de dos 
-variables aleatorias continuas $X$ y $Y$, su función de densidad sigue las mismas
-reglas
+De las definiciones anteriores, se puede obtener que en el caso de dos variables aleatorias continuas $X$ y $Y$, su función de densidad sigue las mismas reglas
 
 \begin{equation*}
 f_{XY}(x, y) = f_{X|Y}(X | Y)f_{Y}(Y)
 \end{equation*}
 
-$f_{XY}$ se conoce como *función de densidad conjunta*, y $f_{X|Y}$ es la 
-*función de densidad condicional*, es decir, la ley que describe la probabilidad 
-de los eventos en $X$ dado un valor de $Y$.
+$f_{XY}$ se conoce como *función de densidad conjunta*, y $f_{X|Y}$ es la *función de densidad condicional*, es decir, la ley que describe la probabilidad de los eventos en $X$ dado un valor de $Y$.
 
 Ambos casos se pueden combinar siguiendo las mismas reglas.
 
 ## Valor esperado
-El valor esperado de una distribución es el *promedio ponderado* de su función
-(masa ó de densidad) con pesos iguales al valor de la variable aleatoria. Se 
-denota por $E[X]$, donde $X$ es la variable aleatoria en cuestión.
+El valor esperado de una distribución es el *promedio ponderado* de su función (masa ó de densidad) con pesos iguales al valor de la variable aleatoria. Se denota por $E[X]$, donde $X$ es la variable aleatoria en cuestión.
 
 En el caso discreto
 \begin{equation*}
@@ -925,51 +832,35 @@ En el caso continuo
 \end{equation*}
 
 ## Ley de los grandes números
-Dada una secuencia $X_1, X_2, ..., X_n$ variables aleatorias independientes e 
-idénticamente distribuidas (i.i.d.), con valor esperado 
-$E[X_1] = E[X_2] = ... = \mu$, el promedio muestral converge al valor de $\mu$
-cuando $n$ tiende a infinito
+Dada una secuencia $X_1, X_2, ..., X_n$ variables aleatorias independientes e idénticamente distribuidas (i.i.d.), con valor esperado $E[X_1] = E[X_2] = ... = \mu$, el promedio muestral converge al valor de $\mu$ cuando $n$ tiende a infinito
 
 \begin{equation*}
   \frac{1}{n}\sum\limits_{i=1}^{n} X_i \xrightarrow{n \to \infty} \mu
 \end{equation*}
 
-Esta ley garantiza un comportamiento estable en fenómenos o experimentos repetidos
-una gran cantidad de veces, y asegura que el promedio muestral en una secuencia de
-valores que se cree son i.i.d. sea un buen estimado del valor esperado de la 
-distribución
+Esta ley garantiza un comportamiento estable en fenómenos o experimentos repetidos una gran cantidad de veces, y asegura que el promedio muestral en una secuencia de valores que se cree son i.i.d. sea un buen estimado del valor esperado de la  distribución
 
 ## Ley de los grandes números | Borel
-Si se tiene un experimento que se repite una gran cantidad de veces, la proporción
-de veces que un evento dado sucede en dicho experimento se acerca a la probabilidad
-de que el evento ocurra. Si $E$ es el evento, $p$ la probabilidad de que ocurra y
-$N_n(E)$ el número de veces que ocurre en $n$ experimentos:
+Si se tiene un experimento que se repite una gran cantidad de veces, la proporción de veces que un evento dado sucede en dicho experimento se acerca a la probabilidad de que el evento ocurra. Si $E$ es el evento, $p$ la probabilidad de que ocurra y $N_n(E)$ el número de veces que ocurre en $n$ experimentos:
 
 \begin{equation*}
   \frac{N_n(E)}{n} \xrightarrow{n \to \infty} p
 \end{equation*}
 
-Esto quiere decir que no sólo el promedio se acerca al valor esperado, sino que
-todos los posibles eventos adquieren la proporción descrita por la ley de probabilidad.
+Esto quiere decir que no sólo el promedio se acerca al valor esperado, sino que todos los posibles eventos adquieren la proporción descrita por la ley de probabilidad.
 
 
 ## Teorema Central de Límite
-Dada una secuencia de variables aleatorias i.i.d, sabemos que su promedio muestral
-converge a su valor esperado. Además, si tienen varianza finita $\sigma^2$, el 
-promedio muestral converge en distribución a una normal con media $\mu$ y varianza 
-$\sigma^2/n$, sin importar la distribución original.
+Dada una secuencia de variables aleatorias i.i.d, sabemos que su promedio muestral converge a su valor esperado. Además, si tienen varianza finita $\sigma^2$, el promedio muestral converge en distribución a una normal con media $\mu$ y varianza  $\sigma^2/n$, sin importar la distribución original.
 
 \begin{equation*}
   \frac{1}{n}\sum\limits_{i=1}^{n} X_i \xrightarrow{d} N(\mu, \sigma^2/n)
 \end{equation*}
 
-Este teorema coloca a la distribución normal en una posición central en la teoría
-estadística y explica su prevalencia en fenómenos naturales donde una medición
-es la suma de muchos pequeños efectos.
+Este teorema coloca a la distribución normal en una posición central en la teoría estadística y explica su prevalencia en fenómenos naturales donde una medición es la suma de muchos pequeños efectos.
 
 ## Ejemplos de distribuciones | Log Normal
-Decimos que X sigue una distribución log normal cuando $Y = log(X)$ sigue
-una distribución normal. 
+Decimos que X sigue una distribución log normal cuando $Y = log(X)$ sigue una distribución normal. 
 ```{r, mysize=T, size='\\small', echo=F, fig.height=4}
 ggplot(data.frame(x=1:300/10, f=dnorm(log(1:300/10))), aes(x=x, y=f)) + geom_line()
 ```
@@ -977,9 +868,7 @@ ggplot(data.frame(x=1:300/10, f=dnorm(log(1:300/10))), aes(x=x, y=f)) + geom_lin
 $\mu = 0, \sigma = 1$
 
 ## Ejemplos de distribuciones | Exponencial
-La distribución exponencial se puede utilizar para modelar tiempos de espera
-entre eventos independientes, como tiempo en una fila, o tiempo de llegada de
-clientes.
+La distribución exponencial se puede utilizar para modelar tiempos de espera entre eventos independientes, como tiempo en una fila, o tiempo de llegada de clientes.
 ```{r, mysize=T, size='\\small', echo=F, fig.height=4}
 ggplot(data.frame(x=1:500/100, f=dexp(1:500/100, rate=1)), aes(x=x, y=f)) + 
   geom_line()
@@ -989,8 +878,7 @@ $\lambda = 1$.
 $1/lambda$ indica el tiempo promedio de llegada
 
 ## Ejemplos de distribuciones | Binomial
-La distribución binomial se puede utilizar para modelar el número de éxitos en 
-algún experimento después de $n$ intentos, con probablidad de éxito $p$
+La distribución binomial se puede utilizar para modelar el número de éxitos en algún experimento después de $n$ intentos, con probablidad de éxito $p$
 ```{r, mysize=T, size='\\small', echo=F, fig.height=4}
 ggplot(data.frame(x=1:10, f=dbinom(1:10, s=10, p=0.5)), aes(x=x, y=f)) + 
   geom_bar(stat="identity")
@@ -999,9 +887,7 @@ ggplot(data.frame(x=1:10, f=dbinom(1:10, s=10, p=0.5)), aes(x=x, y=f)) +
 $n = 10, p = 0.5$
 
 ## Ejemplos de distribuciones | Poisson
-La distribución poisson se utiliza para modelar eventos independientes que 
-suceden con tiempo de espera exponencial, o a una misma tasa, como número de 
-peticiones a un servicio o número de clientes atendidos
+La distribución poisson se utiliza para modelar eventos independientes que suceden con tiempo de espera exponencial, o a una misma tasa, como número de peticiones a un servicio o número de clientes atendidos
 ```{r, mysize=T, size='\\small', echo=F, fig.height=4}
 ggplot(data.frame(x=0:10, f=dpois(0:10, lambda=3)), aes(x=x, y=f)) + 
   geom_bar(stat="identity")
@@ -1011,8 +897,7 @@ $\lambda = 3$
 Una propiedad importante es que $\lambda = E[X] = Var(X)$.
 
 ## Ejemplos de distribuciones | Binomial Negativa
-La distribución binomial negativa se puede utilizar para modelar el número de 
-experimentos fallidos hasta alcanzar $n$ éxitos, con probabilidad de éxito $p$
+La distribución binomial negativa se puede utilizar para modelar el número de experimentos fallidos hasta alcanzar $n$ éxitos, con probabilidad de éxito $p$
 ```{r, mysize=T, size='\\small', echo=F, fig.height=4}
 ggplot(data.frame(x=0:20, f=dnbinom(0:20, s=5, p=0.5)), aes(x=x, y=f)) + 
   geom_bar(stat="identity")
@@ -1020,15 +905,11 @@ ggplot(data.frame(x=0:20, f=dnbinom(0:20, s=5, p=0.5)), aes(x=x, y=f)) +
 
 $n = 5, p = 0.5$
 
-También puede ayudar a modelar cantidades positivas discretas dónde la varianza
-es más grande que la media, como eventos contagiosos o número de acciones en una
-plataforma.
+También puede ayudar a modelar cantidades positivas discretas dónde la varianza es más grande que la media, como eventos contagiosos o número de acciones en una plataforma.
 
 
 ## Estimación de parámetros
-Supongamos que tenemos una muestra aleatoria ${X_1, X_2, ..., X_n}$, es decir,
-una secuencia de variables aleatorias i.i.d. y sabemos que fueron tomadas de una
-distribución $f$ con parámetros desconocidos $\theta$.
+Supongamos que tenemos una muestra aleatoria ${X_1, X_2, ..., X_n}$, es decir, una secuencia de variables aleatorias i.i.d. y sabemos que fueron tomadas de una distribución $f$ con parámetros desconocidos $\theta$.
 
 La densidad conjunta de está muestra está dada por
 
@@ -1036,27 +917,19 @@ La densidad conjunta de está muestra está dada por
   f(x_1, x_2,..., x_n | \theta) = \prod\limits_{i=1}^{n} f(x_i | \theta)
 \end{equation*}
 
-Una manera de estimar el valor de los parámetros theta es maximizar esta función
-con respecto a $\theta$, este método se conoce como *máxima verosimilitud*. A la
-función $L(\theta; x_1, ..., x_n) = f(x_1, ..., x_n | \theta)$ se le conoce como
-función de verosimilitud
+Una manera de estimar el valor de los parámetros theta es maximizar esta función con respecto a $\theta$, este método se conoce como *máxima verosimilitud*. A la función $L(\theta; x_1, ..., x_n) = f(x_1, ..., x_n | \theta)$ se le conoce como función de verosimilitud
 
 ## Estimación de parámetros
-Típicamente, no se maximiza directamente la función de verosimilitud, sino 
-su logaritmo, pues el resultado es el mismo pero es mucho más conveniente 
-trabajar con sumas que con productos.
+Típicamente, no se maximiza directamente la función de verosimilitud, sino su logaritmo, pues el resultado es el mismo pero es mucho más conveniente trabajar con sumas que con productos.
 
 \begin{equation*}
   log L(\theta; x_1, ..., x_n) = \sum\limits_{i=1}^{n} log f(x_i | \theta)
 \end{equation*}
 
-Para la mayoría de las distribuciones populares se conoce una forma cerrada de
-este estimador, por lo que basta buscarla en algún material confiable.
+Para la mayoría de las distribuciones populares se conoce una forma cerrada de este estimador, por lo que basta buscarla en algún material confiable.
 
 ## Estimación de parámetros
-El paquete `MASS` implementa una función que hace muy fácil el cálculo de estas
-estimaciones. Incluye por nombre muchas distribuciones populares, y permite el
-cálculo de cualquier densidad si se usa una función.
+El paquete `MASS` implementa una función que hace muy fácil el cálculo de estas estimaciones. Incluye por nombre muchas distribuciones populares, y permite el cálculo de cualquier densidad si se usa una función.
 
 ```{r, mysize=T, size='\\small', message=FALSE}
 x <- c(8, 11, 14, 13, 9, 9, 10, 12, 8)
@@ -1069,8 +942,7 @@ Consideremos una gráfica de la base de datos de automóviles
 ```{r, echo=F, fig.height=4}
 ggplot(mtc, aes(x=disp, y=mpg)) + geom_point()
 ```
-Es claro que hay una relación entre ambas variables. ¿Cómo podemos encontrarla y
-cuantificarla?
+Es claro que hay una relación entre ambas variables. ¿Cómo podemos encontrarla y cuantificarla?
 
 ## Modelo lineal
 El modelo lineal supone que la relación entre $X$ y $Y$ es 
@@ -1079,9 +951,8 @@ El modelo lineal supone que la relación entre $X$ y $Y$ es
   Y_i = \alpha + \beta X_i + \epsilon_i
 \end{equation*}
 
-donde $\epsilon_i \sim N(0, \sigma_{\epsilon}^2)$. Este término modela el "error" o
-variabilidad alrededor de la forma funcional. Estos errores se suponen independientes
-de $X$ y entre sí.
+donde $\epsilon_i \sim N(0, \sigma_{\epsilon}^2)$. Este término modela el "error" o variabilidad alrededor de la forma funcional. Estos errores se suponen independientes de $X$ y entre sí.
+
 Si consideramos los valores de $X$ fijos, tenemos que 
 \begin{equation*}
   Y_i \sim N(\alpha + \beta X_i, \sigma_{\epsilon}^2)
@@ -1103,13 +974,10 @@ donde
   var(X) = \frac{1}{n}\sum X_i^2 - \bar{X}^2
 \end{align*}
 
-y $\bar{X}$, $\bar{y}$ denotan el promedio muestral. Estos estimados coinciden con
-los de mínimos cuadrados.
+y $\bar{X}$, $\bar{y}$ denotan el promedio muestral. Estos estimados coinciden con los de mínimos cuadrados.
 
 ## Modelo lineal
-Además, usando los cuantiles de la distribución de $Y_i$, podemos encontrar
-un intervalo de "confianza", alrededor del cual esperamos que se encuentre la
-media de la distribución.
+Además, usando los cuantiles de la distribución de $Y_i$, podemos encontrar un intervalo de "confianza", alrededor del cual esperamos que se encuentre la media de la distribución.
 
 ```{r, echo=F, fig.height=4}
 ggplot(mtc, aes(x=disp, y=mpg)) + geom_point() + geom_smooth(method="lm")
@@ -1122,31 +990,21 @@ summary(lm(mpg~disp, mtc))
 ```
 
 ## Valor p
-Dadas dos hipótesis opuestas acerca de un conjunto de datos, una de las cuales 
-se busca rechazar (la hipótesis nula), un valor p indica la probabilidad de obtener un
-conjunto de datos más "extremo" que lo que se observó, si la hipótesis nula
-fuera verdad. Intuitivamente, un valor p pequeño indica que la hipótesis nula
-debe ser rechazada.
+Dadas dos hipótesis opuestas acerca de un conjunto de datos, una de las cuales se busca rechazar (la hipótesis nula), un valor p indica la probabilidad de obtener un conjunto de datos más "extremo" que lo que se observó, si la hipótesis nula fuera verdad. Intuitivamente, un valor p pequeño indica que la hipótesis nula debe ser rechazada.
 
-En el caso del modelo lineal, la hipótesis nula indica que el coeficiente de
-pendiente sea igual a cero, por lo que un valor pequeño está relacionado con un
-buen ajuste.
+En el caso del modelo lineal, la hipótesis nula indica que el coeficiente de pendiente sea igual a cero, por lo que un valor pequeño está relacionado con un buen ajuste.
 
 ## R^2
-El coeficiente de determinación, o R cuadrada, es otra medida del ajuste de un
-modelo. Dadas n observaciones $y_i$ y n predicciones $f_i$, el coeficiente se
-define como 
+El coeficiente de determinación, o R cuadrada, es otra medida del ajuste de un modelo. Dadas n observaciones $y_i$ y n predicciones $f_i$, el coeficiente se define como 
 
 \begin{equation*}
   R^2 = 1 - \frac{\sum(y_i - f_i)^2}{\sum(y_i - \bar{y})^2}
 \end{equation*}
 
-Valores cercanos a 1 indican un buen ajuste, pues indican que las predicciones 
-$f_i$ son cercanas a los valores $y_i$, relativo a la varianza en dichos valores.
+Valores cercanos a 1 indican un buen ajuste, pues indican que las predicciones $f_i$ son cercanas a los valores $y_i$, relativo a la varianza en dichos valores.
 
 ## Insuficiencia de p y R^2
-Nuestro modelo lineal exhibe un valor $p$ muy pequeño y una $R^2$ de 0.7, 
-típicamente considerada buena, ¿podemos decir que es un buen modelo?
+Nuestro modelo lineal exhibe un valor $p$ muy pequeño y una $R^2$ de 0.7, típicamente considerada buena, ¿podemos decir que es un buen modelo?
 
 ## Insuficiencia de p y R^2
 Los residuales no se comportan de manera normal (Supuesto de error normal)
@@ -1157,8 +1015,7 @@ ggplot(data.frame(e=model$residuals), aes(x=e, y=..density..)) +
 ```
 
 ## Insuficiencia de p y R^2
-La variabilidad (spread) de los residuales no se mantiene a través de los niveles
-de la variable de respuesta (Supuesto de varianza constante)
+La variabilidad (spread) de los residuales no se mantiene a través de los niveles de la variable de respuesta (Supuesto de varianza constante)
 ```{r, mysize=T, size='\\small', fig.height=4}
 ggplot(data.frame(e=model$residuals, f=model$fitted.values), aes(x=f, y=e)) + 
   geom_point()
@@ -1172,47 +1029,30 @@ ggplot(mtc, aes(x=disp, y=mpg, color=factor(cyl))) +
 ```
 
 ## Insuficiencia de p y R^2
-En resumen, el valor p y la R^2 no son suficientes para evaluar el buen ajuste
-de un modelo. Siempre es conveniente comprobar los supuestos, y, sobre todo,
-la habilidad de predicción de un modelo cuando se le alimentan datos nuevos, es decir,
-su capacidad para generalizar el fenómeno.
+En resumen, el valor p y la R^2 no son suficientes para evaluar el buen ajuste de un modelo. Siempre es conveniente comprobar los supuestos, y, sobre todo, la habilidad de predicción de un modelo cuando se le alimentan datos nuevos, es decir, su capacidad para generalizar el fenómeno.
 
 ## Interpretaciones de la teoría | Frecuentista
-La probabilidad indica una medida objetiva, la probabilidad de
-un evento es igual a la frecuencia que se alcanza conforme el número de repeticiones
-del experimento crece.
+La probabilidad indica una medida objetiva, la probabilidad de un evento es igual a la frecuencia que se alcanza conforme el número de repeticiones del experimento crece.
 
-No se puede hablar de la probabilidad de un valor fijo (como un parámetro) o de 
-eventos ya sucedidos. Así mismo, es imposible hablar de la probabilidad de eventos
-que por su naturaleza provienen de un experimento que se repite una sola vez. 
-(e.g. terremotos)
+No se puede hablar de la probabilidad de un valor fijo (como un parámetro) o de eventos ya sucedidos. Así mismo, es imposible hablar de la probabilidad de eventos que por su naturaleza provienen de un experimento que se repite una sola vez.(e.g. terremotos)
 
 ## Interpretaciones de la teoría | Bayesiana o Subjetiva
-La probabilidad indica una medida subjetiva, la probabilidad de un evento es la 
-medida de incertidumbre o grado de creencia que un individuo tiene acerca de un evento.
+La probabilidad indica una medida subjetiva, la probabilidad de un evento es la medida de incertidumbre o grado de creencia que un individuo tiene acerca de un evento.
 
-Se puede hablar de la probabilidad de un valor fijo o de eventos sucedidos, así 
-como de eventos únicos. Pero es necesario establecer de antemano, a través de una
-distribución *a priori*, la creencia que tiene el individuo acerca de tal evento.
-Los resultados de un análisis podrían no ser consistentes con distintas distribuciones
-*a priori*, aunque en el límite (con suficientes datos) sí lo son.
+Se puede hablar de la probabilidad de un valor fijo o de eventos sucedidos, así como de eventos únicos. Pero es necesario establecer de antemano, a través de una distribución *a priori*, la creencia que tiene el individuo acerca de tal evento.
+Los resultados de un análisis podrían no ser consistentes con distintas distribuciones *a priori*, aunque en el límite (con suficientes datos) sí lo son.
 
 ## Data Science vs Statistics
-La teoría estadística, junto con todos los métodos que describe, forman un 
-conjunto de herramientas extremadamente poderoso, pero fácil de utilizar de
-manera errónea. Un entendimiento y sensibilidad tanto de la teoría como de sus
-aplicaciones es necesaria. La teoría estadística es esencial para el científico
-de datos.
+La teoría estadística, junto con todos los métodos que describe, forman un conjunto de herramientas extremadamente poderoso, pero fácil de utilizar de manera errónea. Un entendimiento y sensibilidad tanto de la teoría como de sus aplicaciones es necesaria. La teoría estadística es esencial para el científico de datos.
 
-Por otro lado, dominar perfectamente la teoría sin saber como explotarla o las
-herramientas computacionales necesarias para ello, paralizan al científico de 
-datos, que siempre requeriría de ayuda de ingenieros para poder desempeñar.
+Por otro lado, dominar perfectamente la teoría sin saber como explotarla o las herramientas computacionales necesarias para ello, paralizan al científico de datos, que siempre requeriría de ayuda de ingenieros para poder desempeñar.
 
 ## Aprendizaje Estadístico
-
+- Conclusiones de Teoría de la Decisión
 - El problema de aprendizaje supervisado
 - Error = Sesgo + Varianza. Tradeoff
-- Overfitting y la maldición de la dimensionalidad
+- Overfitting 
+- La maldición de la dimensionalidad
 - KISS: Model Edition
 - Medición del error (sesgo + varianza)
 - Cross Validation. Bootstrap. Out of bag
@@ -1223,5 +1063,107 @@ datos, que siempre requeriría de ayuda de ingenieros para poder desempeñar.
 - Árboles de decisión. Random Forests
 - Máquinas de soporte vectorial
 
+## Conclusiones de Teoría de la Decisión
+El teorema de utilidad de von Neumann establece que, bajo ciertos supuestos de "racionalidad", y con opciones inciertas (probabilísticas), un agente buscará maximizar su utilidad esperada $E[U(X)]$, donde $U$ representa la función de utilidad y $X$ la variable aleatoria describiendo los posibles resultados.  
+
+Las hipótesis del teorema establecen reglas acerca de las preferencias del agente, e.g. que si $A$ es preferido a $B$ y $B$ es preferido a $C$, $A$ es preferido a $C$ (transitividad). Estas son usadas en economía y en otros campos y forman la base de la teoría estadística bayesiana.
+
+Sea $L(X) = -U(X)$ la función de pérdida. Entonces minimizar la périda esperada $E[L(X)]$ es equivalente a lo anterior.
+
+Una nota importante es que la teoría de la decisión es *prescriptiva*, no *descriptiva*, es decir, indica cómo deberían comportarse los agentes, no describe como lo hacen en realidad.
+
+## El problema de aprendizaje supervisado
+Supongamos que tenemos variables de entrada $X \in \mathbb{R}^p$, y una variable de salida $Y \in \mathbb{R}$. Buscamos una función $\hat{f}(X)$ para estimar el valor de $Y$.
+
+Para poder escoger una función, necesitamos establecer una *función de perdida* $L(Y, \hat{f}(X))$ que penalize los errores de $f$. Una elección conveniente y popular es el error cuadrático $L(x, y) = (x - y)^2$. Entonces buscamos minimizar
+
+\begin{equation*}
+  E[L]= E[(Y - \hat{f}(X))^2] 
+\end{equation*}
+
+Condicionando en X:
+
+\begin{equation*}
+  E[L] = E_x[ E_{y|x}[(Y-\hat{f}(X))^2 | X)] ]
+\end{equation*}
+
+Por lo que basta minimizar $f$ punto por punto. La solución a este problema es 
+$\hat{f}(x) = E[Y | X = x]$
+
+## El problema de aprendizaje supervisado
+El problema de aprendizaje entonces es encontrar o estimar la *esperanza condicional* de la variable de respuesta, dados los valores de las variables de entrada.
+
+El modelo lineal hace esto suponiendo una distribución para $Y | X = x$, explícitamente
+
+\begin{equation*}
+  Y | X = x \sim N(\alpha + \beta^TX, \sigma^2)
+\end{equation*}
+
+Y estimando los parámetros $\alpha$ y $\beta$. 
+
+## El problema de aprendizaje supervisado
+Otra manera sencilla de estimar la esperanza condicional es directamente, con un promedio local. Sea $x$ un punto fijo, y $N_x$ una vecindad alrededor del punto. Entonces 
+
+\begin{equation*}
+  \hat{y} = \frac{1}{n(N_x)}\sum_{p \in N_x} p
+\end{equation*}
+
+Es una estimación de la esperanza condicional. Este modelo se conoce como vecinos cercanos. Cuando en lugar de escoger una vecindad $N_x$ se escogen los $k$ puntos más cercanos a $x$, estamos hablando de k-vecinos cercanos.
+
+## Error = Sesgo + Varianza
+Consideremos el error de predicción esperado $E[(Y-\hat{f}(X)^2)]$, donde $\hat{f}$ es una función que depende de $X$ y $Y$, si consideramos los valores de $X$ como fijos:
+
+\begin{equation*}
+  E[(Y-\hat{f}(X)^2)] = E[(Y-\hat{f}(X))^2 | X = x_0]
+\end{equation*}
+
+Supongamos que $Y = f(X) + \epsilon$ donde $f(X)$ es la "verdadera" función y $E[\epsilon] = 0$, $Var(\epsilon) = \sigma^2$. Entonces podemos probar que:
+
+\begin{equation*}
+  E[(Y-\hat{f}(X))^2 | X = x_0] = \sigma^2 + Sesgo(\hat{f}(x_0))^2 + Var(\hat{f}(x_0)^2)
+\end{equation*}
+
+Donde $Sesgo(\hat{f}) = (f(X) - E[\hat{f}(X)])$.
+
+## Error = Sesgo + Varianza
+El primer término es el error inherente al fenómeno, es un *error irreducible*, los otros dos están bajo nuestro control. El sesgo indica la tendencia a subestimar o sobreestimar consistentemente, mientras que la varianza representa el spread alrededor de la predicción. 
+
+El siguiente experimento muestra como interactuan estos dos términos al ajustar un modelo de 
+k-vecinos para diferentes valores de $k$
+
+## Error = Sesgo + Varianza
+El parámetro $k$ representa la complejidad del modelo, el modelo es más complejo cuando $k = 1$, y es el modelo más sencillo
+posible (constante), cuando $k = n$. Conforme $k$ sube, el modelo se estabiliza, la varianza baja, pero el sesgo sube.
+
+```{r, echo=FALSE, mysize=T, size='\\small', fig.height=4}
+library(FNN)
+n.data <- 11000
+n.train <- 10000
+data <- data_frame(x1=rnorm(n.data, 10, 7), 
+                   x2=rnorm(n.data, 6, 3), 
+                   x3=rnorm(n.data, 15, 10), 
+                   y = x1 + x2 + x3 + rnorm(n.data))
+train <- data[1:n.train,]
+test <- data[(n.train+1):n.data,]
+
+preds <- sapply(1:40, function(k) {
+  knn.reg(train=train[1:3], test=test[1:3], y=train$y, k=k)$pred
+}) 
+error <- apply(preds, 2, function(e) sum((e-test$y)**2)) %>% t() %>% 
+  t() %>%
+  data.frame() %>%
+  setNames("error") %>%
+  mutate(k = 1:40)
+ggplot(error, aes(x=k, y=error)) + geom_line()
+
+```
+
+## Overfitting
+En el experimento anterior, cuando $k = 1$, el modelo está buscando el punto más parecido a $x$ en el conjunto de entrenamiento, esto implica que ligeras variaciones en ese conjunto resultan en variaciones en las predicciones (alta varianza), además, si el punto más cercano a $x$ no es suficientemente similar, o el valor en el conjunto de entrenamiento es un outlier, esto resulta en un error más grande.
+
+Este fenómeno se conoce como *overfitting*, o *sobreajuste*, que indica que nuestro modelo sigue demasiado al conjunto de entrenamiento, y perdió la habilidad de generalizar el fenómeno. Los errores por overfitting son típicamente mucho más grandes que los de un modelo simple, por lo que deben de evitarse usar modelos complejos en medida de lo posible.
+
+## La maldición de la dimensionalidad
 
 
+## KISS
