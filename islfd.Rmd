@@ -1163,7 +1163,46 @@ En el experimento anterior, cuando $k = 1$, el modelo está buscando el punto m�
 
 Este fenómeno se conoce como *overfitting*, o *sobreajuste*, que indica que nuestro modelo sigue demasiado al conjunto de entrenamiento, y perdió la habilidad de generalizar el fenómeno. Los errores por overfitting son típicamente mucho más grandes que los de un modelo simple, por lo que deben de evitarse usar modelos complejos en medida de lo posible.
 
-## La maldición de la dimensionalidad
+El overfitting se puede diagnosticar comparando el error de entrenamiento contra el error de predicción. Si el primero es muy chico aunque el segundo no, podemos pensar que existe sobreajuste en nuestro modelo.
 
+## La maldición de la dimensionalidad
+Consideremos el siguiente experimento. Sea $U_1, ..., U_n$ una muestra aleatoria uniforme en el hipercubo unitario en $\mathbb{R}^p$, es decir, todas las componentes de $U_i$ se distribuyen uniforme en el intervalo $[0,1]$ 
+
+Tomemos un punto $x$ al azar y un hipercubo alrededor de tamaño $r$ con $x$ como punto medio. Entonces la proporción esperada de $U_i$ que capturaremos será $r^p$. La gráfica ilustra este resultado para $r = 0.4$ con una simulación.
+
+
+```{r, echo=F, fig.height=4}
+side.prop <- function(p, nn, r) {
+  u <- replicate(p, runif(nn))
+  x <- replicate(p, runif(1))
+  x1 <- x - r/2
+  x2 <- x + r/2
+  length(which(colSums((t(u) >= x1) & (t(u) <= x2)) == p))/nn  
+}
+prop <- sapply(1:10, function(p) {
+  mean(replicate(100, side.prop(p, 10000, 0.4)))
+})
+ggplot(data.frame(p=1:10, prop=prop), aes(x=p, y=prop)) + geom_line() + 
+  geom_point() +
+  scale_x_continuous(breaks = 1:10)
+
+```
+
+## La maldición de la dimensionalidad
+De manera equivalente, el tamaño esperado del lado de un hipercubo que necesitamos para capturar la proporción $r$ de los datos alrededor de un punto $x$, es de $r^{1/p}$. En otras palabras, si tenemos $p$ dimensiones y un punto $x$, necesitaremos cubrir $r^{1/p}$ del espacio para capturar una proporción $r$ de los datos. La gráfica representa esto para $r = 0.1$
+
+```{r, echo=FALSE, fig.height=4}
+ggplot(data_frame(p=1:10, side=0.1^(1/p)), aes(x=p, y=side)) + geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = 1:10)
+```
+
+Lo que se intenta mostrar es que, en dimensiones grandes, es difícil encontrar puntos "parecidos" a un punto arbitrario en nuestro espacio, eso hace que modelos locales como k-vecinos tengan que generalizar a partir de puntos muy distintos entre sí.
 
 ## KISS
+La conclusión de los dos temas anteriores, es que los modelos deben de mantenerse "simples" en medida de lo posible. Introducir mucha complejidad como en el caso de k-vecinos con $k$ muy pequeña lleva un riesgo de sobreajuste, mientras que introducir una gran cantidad de variables nos puede llevar a caer en la "maldición" de la dimensionalidad.
+
+## Reducción de dimensionalidad
+Existen varias técnicas para evitar los problemas que conlleva utilizar dimensiones muy grandes. Listo algunas de las más populares, sin orden en particular.
+
+- PCA (Principal Component Analysis): Dado un conjunto de datos con valores reales. $X \in \mathbb{R}^{p \times n}
