@@ -1061,7 +1061,6 @@ Por otro lado, dominar perfectamente la teoría sin saber como explotarla o las 
 - Modelos lineales generalizados
 - Lasso, ridge, glmnet
 - Árboles de decisión. Random Forests
-- Máquinas de soporte vectorial
 
 ## Conclusiones de Teoría de la Decisión
 El teorema de utilidad de von Neumann establece que, bajo ciertos supuestos de "racionalidad", y con opciones inciertas (probabilísticas), un agente buscará maximizar su utilidad esperada $E[U(X)]$, donde $U$ representa la función de utilidad y $X$ la variable aleatoria describiendo los posibles resultados.  
@@ -1205,4 +1204,166 @@ La conclusión de los dos temas anteriores, es que los modelos deben de mantener
 ## Reducción de dimensionalidad
 Existen varias técnicas para evitar los problemas que conlleva utilizar dimensiones muy grandes. Listo algunas de las más populares, sin orden en particular.
 
-- PCA (Principal Component Analysis): Dado un conjunto de datos con valores reales. $X \in \mathbb{R}^{p \times n}
+- PCA (Principal Component Analysis): Dado un conjunto de datos con valores reales. $X \in \mathbb{R}^{p \times n}$, PCA encuentra la transformación lineal tal que el primer componente tiene la varianza más alta posible, y cada componente siguiente la varianza más alta posible con la restricción de que sea ortogonal a los componentes anteriores. Es recomendable usar PCA cuando la varianza explicada por los primeros componentes es relativamente alta comparada con la varianza total del conjunto original. `prcomp` implementa este algoritmo en R.
+
+## Reducción de dimensionalidad
+- FA (Factor Analysis): Tenemos $p$ variables $x_i$ con medias $\mu_i$. Supongamos que $x_i - \mu_i = \sum\limits_{j=1}^nl_ijF_j + \epsilon$. Si además $E[F_j] = 0$ y $Cov(F_i, F_j) = 0$,  las soluciones $F_j$ al sistema se llaman los "factores". Existen muchos métodos para encontrar esta solución. Una ventaja de FA es que puede ser utilizado con variables categóricas, a diferencia de PCA. `factanal` implementa este algoritmo en R, encontrando la solución a través del método de máxima verosimilitud.
+
+## Reducción de dimensionalidad
+- MDS (Multi-Dimensional Scaling): Si tenemos un conjunto de observaciones $X$ en donde podemos definir una métrica (distancia) $d$, definimos $D$ como la matriz de distancias ($D_{ij} = d(X_i, X_j)$). El algoritmo de MDS busca encontrar las coordenadas en un espacio (euclidiano) de dimension $N$, de tal manera que las distancias se conserven de la mejor manera posible. Una ventaja de MDS es que no es necesario imponer ninguna restricción en los datos, basta que podamos definir una métrica entre dos observaciones. `cmdscale` implementa este método en R.
+
+## Medición del error
+El error de entrenamiento tiende a ser optimista en cuanto al error de predicción, esto es porque una vez que encontramos datos fuera del conjunto de entrenamiento, el modelo necesita generalizar el fenómeno. Además, aunque el error de entrenamiento sea muy chico, corremos el riesgo de caer en sobreajuste. Necesitamos otro modo de estimar el error de predicción.
+
+La mejor alternativa es dividir el conjunto de datos disponible en tres partes: entrenamiento, validación, y prueba. El primero es utilizado para entrenar todos los modelos, el segundo para realizar una selección del modelo, y el tercero como una última prueba, para estimar el error de generalización. Un split típico puede ser 60% entrenamiento, 20% validación, y 20% prueba. Esta partición se debe de realizar de manera aleatoria.
+
+## Medición del Error
+Sin embargo, esto requiere tener una gran cantidad de datos, y en la mayoría de los casos, preferiríamos usar todos los datos disponibles para alimentar un modelo. Existen tres métodos populares para abilitar esto:
+
+- Cross Validation
+- Bootstrap
+- Out of bag
+
+Aunque se uso uno de estos métodos, es recomendable "apartar" una parte del conjunto de datos para realizar una última estimación del error de predicción.s
+
+## Cross Validation
+Se toma el dataset y se divide en $k$ partes, después, se repite lo siguiente para cada parte $i$:
+
+- Se juntan todas las partes EXCEPTO $i$
+- Se entrena el modelo en ese conjunto
+- Se calcula el error de predicción en la parte $i$
+
+Finalmente, el error es promediado. Este método nos da una manera de utilizar el propio conjunto de entrenamiento. El promedio y la varianza de estos errores nos otorgan un método un poco más robusto para estimar el error de predicción. El paquete `caret` y `cvTools` ofrecen funciones para realizar validación cruzada.
+
+## Bootstrap
+La idea es similar a CV en cuanto a que se obtienen distintos errores de predicción de modelos entrenados en subconjuntos del dataset original. El método bootstrap está bien establecido en la teoría estadística como manera de estimar cualquier función de un conjunto de datos con una distribución arbitraria.
+
+- Tomamos $B$ muestras de tamaño $R$ del conjunto de datos original, con reemplazo.
+- Para cada muestra, se entrena el modelo usandola como conjunto de entrenamiento y se calcula el error de predicción en todos los puntos que NO están en la muestra.
+- Se promedia el error de predicción en cada punto, y finalmente se calcula el error de predicción general.
+
+La ventaja de bootstrap sobre CV es que se puede realizar una cantidad de veces arbitraria, y el resultado converge teóricamente al error de predicción "real". Además, nos permite evaluar el error en cada punto, no sólo en general.
+El paquete `boot` implementa funciones para hacer el resampling. El paquete `caret` incluye funciones para estimar el error de un modelo vía bootstrap.
+
+## Out of bag
+Supongamos que ajustamos una serie de modelos $T_i$ utilizando subconjuntos $A_i$ de nuestro dataset $X$. Obtenemos un modelo final combinando las predicciones individuales de los modelos $T_i$, por ejemplo, promediando sus predicciones en cada punto. Este tipo de modelo se conoce como ensamble.
+
+Entonces, una manera de estimar el error en un punto $x$ es combinar las predicciones de todos los $T_i$ que NO incluyen a $x$ en su conjunto de entrenamiento y calcular el error entre $x$ y dicha combinación. Las funciones que ajustan modelos de ensamble típicamente proveen una opción para estimar el error mientras se ajusta el modelo, por ejemplo `randomForest`.
+
+## Métricas de error (Regresión)
+Hasta ahora sólo hemos hablado de manera abstracta de como estimar el error, sin proveer una métrica directa. En el caso de regresión, la manera más común, y que está atado a la elección de la esperanza condicional, es el error cuadrático medio. De hecho, por la ley de los grandes números:
+
+\begin{equation*}
+  \frac{1}{n}\sum\limits_{i=1}^{n_t} (y_i - \hat{f}_i) \rightarrow E[L(Y, \hat{f}(x))^2] 
+\end{equation*}
+
+Donde $\hat{f}_i$ es la estimación para el valor $y_i$ en nuestro conjunto de prueba. Sin embargo, bajo ciertas condiciones, otras métricas pueden ser más adecuadas
+
+## Métricas de error (Regresión)
+- Cuando existen outliers, que penalizan muchísimo errores en su estimación, se recomienda utilizar el error absoluto medio. otra opción es utilizar el error cuadrático mediano.
+- Cuando la escala de la variable de respuesta es muy grande, de manera que valores altos de $y$ pesan de manera más importante en el error, se recomienda utilizar el error cuadrático logarítmico. Esto es equivalente a realizar predicciones sobre $log y$, en lugar de $y$.
+- Cuando existen casos que son más importantes para la aplicación del modelo, podemos pesar el error escogido. El peso de las observaciones que correspondan a dichos casos debe ser superior, y todos los pesos deben sumar a 1.
+
+## Métricas de error (Clasificación)
+En el caso de clasificación, del que no se ha hablado mucho en estas notas, existen muchas más maneras de estimar el error, estas deben ser escogidas dependiendo del número de clases que existan en la variable a predecir, la importancia relativa de esos casos, entre otros factores. Se listan algunas de las más comunes, y se deja como ejercicio al lector averiguar su caso de uso e implementación.
+
+- Proporción mal clasificada (para cada clase)
+- Pérdida logarítmica
+- Área debajo de la curva ROC
+- Matriz de confusión
+
+## Modelos lineales generalizados
+El modelo lineal no necesariamente implica una relación exclusivamente lineal entre $X$ y $Y$, a continuación se ilustra un ejemplo.
+```{r, mysize=T, size='\\small', fig.height=4}
+  data <- data_frame(x = runif(100, min=1, max=20), y = 3*sin(x) + rnorm(100, 1, 1))
+  ggplot(data, aes(x=x, y=y)) + geom_point() + geom_smooth(method = "lm", formula = y~sin(x))
+```
+
+Estos modelos también pueden partir de imponer otras distribuciones distintas a la normal en $Y | X$. Un caso popular es la regresión logística, donde se impone una distribución binomial a $Y | X$, con el fin de realizar clasificación. A todos estos modelos en conjunto se les conoce como *modelos lineales generalizados* o *GLM*. (ver función `glm`)
+
+## Regularización: Lasso, Ridge
+GLM nos abre una gran cantidad de opciones en el modelado, a partir de la transformación de variables. Sin embargo, investigar si existe una relación con tantas posibles transformaciones es impráctico. Además, incluir gran cantidad de variables y transformaciones aumenta la complejidad del modelo, un efecto indeseable.
+
+La regularización *penaliza* la complejidad en un modelo, restringiendo su complejidad, y en algunos casos, removiendo variables que aportan poco ajuste al modelo. Vemos dos casos de regularización para el modelo lineal.
+
+## Ridge
+Recordemos que la estimación de parámetros en el modelo lineal consiste en resolver el problema
+
+\begin{equation*}
+  \hat{\beta} = argmin(\sum\limits_{i=1}^{n}(y_i - \beta_0 - \sum\limits_{j=1}^px_{ij}\beta_j))
+\end{equation*}
+
+La regresión ridge se puede definir añadiendo una penalización a este problema
+
+\begin{equation*}
+  \hat{\beta} = argmin(\sum\limits_{i=1}^{n}(y_i - \beta_0 - \sum\limits_{j=1}^px_{ij}\beta_j) + \lambda\sum\limits_{j=1}^p\beta_j^2)
+\end{equation*}
+
+$\lambda$ es el parámetro de regularización. El resultado es un modelo *menos* complejo que la regresión lineal, pues es naturalmente atraído hacia el modelo constante. En la optimización de ridge es prácticamente imposible que alguna de las $\beta_j$ sea igual a cero, por lo que este modelo sólo debe utilizarse con variables informativas.
+
+## Lasso
+De manera similar a ridge, lasso añade una penalización al problema lineal.
+
+\begin{equation*}
+  \hat{\beta} = argmin(\sum\limits_{i=1}^{n}(y_i - \beta_0 - \sum\limits_{j=1}^px_{ij}\beta_j) + \lambda\sum\limits_{j=1}^p|\beta_j|)
+\end{equation*}
+
+A diferencia de ridge, la naturaleza de la restricción permite que algunas $\beta_j$ se optimizen en cero, por lo que lasso puede ser utilizado para selección de variables. El modelo resultante es aún más rígido (menos complejo) que el que se obtiene con ridge
+
+## Elastic Net
+Si se quiere evaluar un modelo con complejidad entre lasso y ridge, se puede añadir un tercer tipo de penalización, de la siguiente manera.
+\begin{equation*}
+  \hat{\beta} = argmin(\sum\limits_{i=1}^{n}(y_i - \beta_0 - \sum\limits_{j=1}^px_{ij}\beta_j) + (1-\alpha)\lambda\sum\limits_{j=1}^p\beta_j^2 + \alpha\lambda\sum\limits_{j=1}^p|\beta_j|)
+\end{equation*}
+
+Con $0 < \alpha < 1$. Este es exactamente el modelo que ofrece el paquete `glmnet`. La función además permite controlar la distribución que se impone a $Y | X$.
+
+## Árboles de decisión
+Un árbol de decisión parte el espacio en el que se encuentra $X$, nuestro conjunto de datos, a través de una serie de reglas binarias, y ajusta un modelo local (típicamente constante) en cada región.
+
+Intuitivamente, el objetivo del árbol es aislar puntos similares entre sí, y encontrar, para cada punto en donde se pida una predicción, la región a la que corresponde y un modelo local adecuado para ese punto. En ese sentido, es un intento de estimación directa de $E[Y | X]$
+
+Decidir las reglas binarias y el nivel de complejidad de un árbol de decisión es un problema complejo, y todas las soluciones propuestas son aproximaciones numéricas. Típicamente, en cada paso, se busca la variable y el valor que minimizen el error cuadrático en cada una de las dos regiones resultantes.
+
+## Árboles de decisión
+La profundidad del árbol es un parámetro que controla la complejidad del modelo. El árbol más complejo posible aisla cada punto, y es equivalente a k-vecinos con $k = 1$. El árbol más simple posible es equivalente al modelo constante.
+
+La estrategia típica es crecer el árbol hasta que un tamaño mínimo de nodo es alcanzado, p.ej. 5 puntos, y después cortarlo según un parámetro de complejidad.
+
+## Random Forest
+Recordemos el teorema central de límite.
+
+\begin{equation*}
+  \frac{1}{n}\sum\limits_{i=1}^{n} X_i \xrightarrow{d} N(\mu, \sigma^2/n)
+\end{equation*}
+
+Supongamos que tenemos $n$ árboles $T_i$, construidos aleatoriamente, pero con las mismas reglas. Aplicando el teorema, el promedio del resultado de cada árbol para un punto $x_0$ en particular, es un estimado con el mismo sesgo, pero menos varianza que el de cada árbol individual. El mejor caso se da cuando cada árbol individual es insesgado, es decir $E[T_i(x_0)] = f(x_0)$ donde $f$ es la función "real" que sigue $Y$ con respecto a $X$ ($Y = f(X) + \epsilon$).
+
+## Random Forest
+¿Cómo construir los árboles de manera aleatoria, pero asegurando que son un predictor decente?
+
+Para cada árbol $b$ desde $1$ hasta $B$ (el número de árboles):
+
+- Toma una muestra bootstrap $Z$ de tamaño $n_T$ del dataset $X$
+- Crea un árbol de decisión $T_b$ utilizando la muestra $Z$ siguiendo los sig. pasos de manera recursiva hasta alcanzar nodos de $n_m$ puntos:
+
+1. Selecciona $m$ variables de las $p$ 
+2. Elige la mejor variable y split de entre las $m$
+3. Divide el nodo en dos de acuerdo a este split
+  
+Para hacer una predicción en un punto $x_0$, promedia los valores de $T_i(x_0)$
+
+## Random Forest
+Debido a que son aleatorios, cada árbol es un predictor débil de manera individual, aunque decente, pues los splits son escogidos de manera óptima.
+
+Gracias a la ley de los grandes números y al teorema central de límite, el ensamble es un predictor mucho más fuerte que cualquiera individual, con pocas posibilidades de causar sobreajuste.
+
+Este modelo no impone ninguna restricción sobre el conjunto de datos, por lo que es una elección ideal como primer modelo. Muchas veces es muy difícil encontrar un mejor predictor a pesar de pasar una gran cantidad de tiempo realizando transformaciones y probando diferentes modelos.
+
+## State of the Art
+Existen métodos más sofisticados, que imponen una serie de supuestos en el conjunto de datos, o requieren una serie de transformaciones para ser efectivos. Support Vector Machines, Boosting, Modelos Gráficos, entre otros.
+
+Estos modelos son muy capaces de hacer un mejor trabajo en casos específicos, pero es necesario entender los supuestos y ser capaz de verificarlos para nuestro conjunto de datos. Muchas veces eso va más allá de simples mediciones numéricas.
+
+Por último, en una escala muy grande, todos los modelos tienen *performance* similar, gracias a la ley de los grandes números. Cada problema es único y requiere una exploración del conjunto de datos y entendimiento del problema a resolver.
+
