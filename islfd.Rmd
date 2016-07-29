@@ -377,9 +377,9 @@ do.call("do.something", args)
 ## Attach, Detach
 `attach` añade un objeto a `search()`. Este objeto puede ser un environment, lista o data frame, permitiendo acceso a su lista de nombres en el environment en el que se esta trabajando.
 ```{r, mysize=TRUE, size='\\small'}
-attach(e)
+attach(mtcars)
 search()
-detach(e)
+detach(mtcars)
 ```
 
 ## Attach, Detach
@@ -1258,3 +1258,9 @@ Estos modelos son muy capaces de hacer un mejor trabajo en casos específicos, p
 
 Por último, en una escala muy grande, todos los modelos tienen *performance* similar, gracias a la ley de los grandes números. Cada problema es único y requiere una exploración del conjunto de datos y entendimiento del problema a resolver.
 
+## Further Reading
+
+- [\underline{Advanced R}](http://adv-r.had.co.nz/) - Hadley Wickham
+- [\underline{A First Course in Probability}](http://zalsiary.kau.edu.sa/Files/0009120/Files/119387_A_First_Course_in_Probability_8th_Edition.pdf) - Sheldon Ross
+- [\underline{Statistical Inference}](http://people.unica.it/musio/files/2008/10/Casella-Berger.pdf) - Casella, Berger
+- [\underline{The Elements of Statistical Learning}](https://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf) - Friedman, Hastie, Tibshirani
